@@ -23,7 +23,14 @@ class App extends React.Component {
           <ul>
           {this.state.items.map((item, i) => {
             return (
-              <li key={i}>{item}</li>
+              <li 
+                key={i}
+                onClick={() => {
+                  this._deleteItem(i)
+                }}
+              >                
+                {item}
+              </li>
             )
           })}
           </ul>
@@ -40,6 +47,16 @@ class App extends React.Component {
         ...this.state.items,
         this.state.text
       ]
+    }, () => {
+      this.setState({
+        text: ''
+      })
+    })
+  }
+
+  _deleteItem = (index) => {
+    this.setState({
+      items: this.state.items.filter((item, i) => i !== index)
     })
   }
 
