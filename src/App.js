@@ -24,12 +24,25 @@ class App extends React.Component {
           {this.state.items.map((item, i) => {
             return (
               <li 
-                key={i}
-                onClick={() => {
-                  this._deleteItem(i)
-                }}
-              >                
-                {item}
+                key={i}                
+              >    
+                <input 
+                  type="checkbox" 
+                  checked={item.isCompleted ? "checked" : ""}
+                  onChange={() => {
+                    this._toggleCompleted(i)
+                  }}
+                />
+                {item.text}
+                {
+                  item.isCompleted ? 
+                      <button
+                      onClick={() => {
+                        this._deleteItem(i)
+                      }}
+                    >🗑</button>
+                  : null
+                }
               </li>
             )
           })}
@@ -45,7 +58,10 @@ class App extends React.Component {
     this.setState({
       items: [
         ...this.state.items,
-        this.state.text
+        {
+          text: this.state.text,
+          isCompleted: false
+        }
       ]
     }, () => {
       this.setState({
@@ -59,6 +75,21 @@ class App extends React.Component {
       items: this.state.items.filter((item, i) => i !== index)
     })
   }
+
+  _toggleCompleted = (index) => {
+    this.setState({
+      items: this.state.items.map((item, i) => {
+        if (i === index) {
+          return {
+            ...item,
+            isCompleted: !item.isCompleted
+          }
+        } else {
+          return item;
+        }
+      })
+    })
+  }  
 
   _updateText = (event) => {
     console.log(event.target.value);
